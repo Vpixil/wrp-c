@@ -1851,6 +1851,7 @@ static ssize_t __wrp_bytes_to_struct( const void *bytes, const size_t length,
         memset( metadata, 0, sizeof( data_t ) );
 
         decodeReq->metadata = (struct data_struct *) metadata;
+	printf(getpid());
         WRP_DEBUG("unpacking encoded data\n" );
         msgpack_zone_init( &mempool, 2048 );
         unpack_ret = msgpack_unpack( bytes, length, NULL, &mempool, &deserialized );
