@@ -1861,7 +1861,7 @@ static ssize_t __wrp_bytes_to_struct( const void *bytes, const size_t length,
 
         decodeReq->metadata = (struct data_struct *) metadata;
 	
-        WRP_DEBUG("unpacking encoded data %d,%d,process_id,p_process_id"` );
+        WRP_DEBUG("unpacking encoded data %d,%d",process_id,p_process_id );
         msgpack_zone_init( &mempool, 2048 );
         unpack_ret = msgpack_unpack( bytes, length, NULL, &mempool, &deserialized );
         WRP_DEBUG("unpack_ret:%d\n", unpack_ret );
