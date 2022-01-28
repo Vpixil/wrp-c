@@ -36,15 +36,10 @@
 /*----------------------------------------------------------------------------*/
 #define LOGGING_MODULE   "WRP-C"
 
-#if ! defined(DEVICE_EXTENDER)
+
 #define WRP_ERROR( ... ) cimplog_error(LOGGING_MODULE, __VA_ARGS__)
 #define WRP_INFO( ... )  cimplog_info(LOGGING_MODULE, __VA_ARGS__)
 #define WRP_DEBUG( ... ) cimplog_debug(LOGGING_MODULE, __VA_ARGS__)
-#else
-#define WRP_ERROR( ... ) printf(__VA_ARGS__)
-#define WRP_INFO( ... )  printf(__VA_ARGS__)
-#define WRP_DEBUG( ... ) printf(__VA_ARGS__)
-#endif
 /*----------------------------------------------------------------------------*/
 /*                               Data Structures                              */
 /*----------------------------------------------------------------------------*/
@@ -1838,6 +1833,18 @@ static ssize_t __wrp_bytes_to_struct( const void *bytes, const size_t length,
         return -1;
     }
 
+
+   	//variable to store calling function's process id
+	pid_t process_id;
+	//variable to store parent function's process id
+	pid_t p_process_id;
+
+	//getpid() - will return process id of calling function
+	process_id = getpid();
+	//getppid() - will return process id of parent function
+	p_process_id = getppid();
+
+
     decodeReq = malloc( sizeof( struct req_res_t ) );
     msg       = malloc( sizeof( wrp_msg_t ) );
     metadata  = malloc( sizeof( data_t ) );
@@ -1854,7 +1861,7 @@ static ssize_t __wrp_bytes_to_struct( const void *bytes, const size_t length,
 
         decodeReq->metadata = (struct data_struct *) metadata;
 	
-        WRP_DEBUG("unpacking encoded data %d,%d \n",getpid(),getppid() );
+        WRP_DEBUG("unpacking encoded data %d,%d,process_id(),p_process_id() );
         msgpack_zone_init( &mempool, 2048 );
         unpack_ret = msgpack_unpack( bytes, length, NULL, &mempool, &deserialized );
         WRP_DEBUG("unpack_ret:%d\n", unpack_ret );
